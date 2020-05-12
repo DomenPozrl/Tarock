@@ -1,0 +1,75 @@
+#state representation
+
+
+#okej sepravi kako bi zdej to naredu
+
+
+#mogoce da mamo state je par vrednosti (karta, ni vec v igri/v roki/na mizi/drug player)
+#akcije so pa igras karto
+
+
+#state: 
+#škrt igrane karte, 				2
+#ne mores pobrati igrane karte, 	2
+#lahko poberes igranih kart, 		2
+#player2 skrt igrane karte, 		2
+#player3 skrt igrane karte, 		2
+#stevilo tarokov se v igri, 		22
+#stevilo krizov v igri, 			9
+#stevilo pikov v igri,  			9
+#stevilo kar v igranih 				9
+#stevilo src 						9
+#--------------------------------------------------
+#skupaj							4618944
+
+#prevec kombinacij
+#naredu barve samo binarno torej a so se v igri al jih ni vec
+#al pa mogoče brez tega sam skrtost k itak ce si ti skrt in onadva skrta pol ves da jih ni vec v igri
+
+#state2: 
+#škrt igrane karte, 				2
+#lahko poberes igranih kart, 		2
+#player2 skrt igrane karte, 		2
+#player3 skrt igrane karte, 		2  je skrt/mogoce je mogoce ni
+#imas se taroke,					2
+#player2 nima vec tarokov			2
+#player3 nima vec tarokov			2	nima vec/mogoce ma mogoce nima
+#--------------------------------------------------
+#skupaj								128
+
+
+#okej kul to je pa ze uredu stevilo zdej pa poglejmo action
+
+#actions
+#spustis ne poberes tudi ce lahko
+#poberes poberes ampak z najmanjso vecjo
+#stegnes poberes ampak z sredno od vecjih
+#all in poberes z najvecjo od vecjih
+
+
+
+#to je kul ampak to je sam ce nekdo drug pride vn
+#kaj pa ce ti prides vn
+#pomoje najbols ubistvu, da furas dve tabeli. sepravi, ena tabela k se uci kako igrat, druga tabela, k se uci s cim vn pridet
+#ja to se slis kr kul bom razmislu kaj bi ble akcije pa state representation after this break
+
+#stateplay:
+#imas kralja						2
+#imas damo							2
+#imas pob/caval						2
+#imas platlce						2
+#imas se taroke,					2
+#player2 nima vec tarokov			2
+#player3 nima vec tarokov			2	nima vec/mogoce ma mogoce nima
+#--------------------------------------------------
+#skupaj								128
+
+
+#actions
+#igras platlca
+#igras pob/caval
+#igras damo
+#igras kralja
+#igras tarok
+
+#tukej bojo pac neka polja, k bojo nan sepravi, ne mors igrt platlca ce ga nimas
