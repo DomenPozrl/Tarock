@@ -492,6 +492,132 @@ class Tarock:
                                                                 
         return self.get_state(stack, player_id, player2, player3, stack_value, legal_moves, hand, discard)
 
+    def search_discard(self, discard, card):
+        
+        #[[(card, player), (card, player), (card, player)], [(card, player), (card, player), (card, player)]]
+        
+        for play in discard:
+
+            for card1, player in play:
+                if card1 == card:
+                    return True
+        return False
+
+    def search_mega_taroka(self, discard, hand):
+
+        #0 -> oba discard True True False False
+        #1 -> 1 nasprotnik 1 discard    True False False False/ False True False False
+        #2 -> 1 nasprotnik 1 jaz False False True False
+        #3 -> 2 nasprotnik False False False False
+        #4 -> 1 jaz 1 discard True False True False
+        #5 -> 2 jaz False False True True
+
+        mond_discard = self.search_discard(discard, 60)
+        skis_discard = self.search_discard(discard, 61)
+
+        mond_hand = 60 in hand
+        skis_hand = 61 in hand
+        
+        mond_opponent = not mond_discard and not mond_hand
+        skis_opponent = not skis_discard and not skis_hand
+
+        if mond_discard and skis_discard:
+            return 0
+        if (mond_opponent and skis_discard) or (mond_discard and skis_opponent):
+            return 1
+        if (mond_opponent and skis_hand) or (mond_hand and skis_opponent):
+            return 2
+        if mond_opponent and skis_opponent:
+            return 3
+        if (mond_hand and skis_discard) or (mond_discard and skis_hand):
+            return 4
+        if mond_hand and skis_hand:
+            return 5
+
+    def get_new_state(self, hand, discard, stack, player2, player3):
+        
+        #0 -> v discardu, 1-> enemy, 2-> in hand
+        new_states = [("herc kralj", [0,1,2]),
+              ("herc dama", [0,1,2]),
+              ("kara kralj", [0,1,2]),
+              ("kara dama", [0,1,2]),
+              ("pik kralj", [0,1,2]),
+              ("pik dama", [0,1,2]),
+              ("kriz kralj", [0,1,2]),
+              ("kriz dama", [0,1,2]),
+              ("mega taroka", [0,1,2,3,4,5]),
+              ("pagat", [0,1,2]),
+              ("player2 brez tarokov", [0, 1]),
+              ("player3 brez tarokov", [0, 1]),
+              ("vrednost stacka", [0,1,2])]
+        
+        #herckral 8
+        #herc dama 7
+        #kara kral 18
+        #kara dama 17
+        #pik kral 28
+        #pik dama 27
+        #kriz kral 38
+        #kriz dama 37
+
+        #inicializiramo da imajo vse nasprotniki
+        state = [1 for i in range(len(new_states))]
+        
+        #herc kral
+        state[0] = 0 if self.search_discard(discard, 8) else 1
+        state[0] = 2 if 8 in hand else 1
+
+        #herc dama
+        state[1] = 0 if self.search_discard(discard, 7) else 1
+        state[1] = 2 if 7 in hand else 1
+
+        #kara kral
+        state[2] = 0 if self.search_discard(discard, 18) else 1
+        state[2] = 2 if 18 in hand else 1
+
+        #kara dama
+        state[3] = 0 if self.search_discard(discard, 17) else 1
+        state[3] = 2 if 17 in hand else 1
+
+        #pik kral
+        state[4] = 0 if self.search_discard(discard, 28) else 1
+        state[4] = 2 if 28 in hand else 1
+
+        #pik dama
+        state[5] = 0 if self.search_discard(discard, 27) else 1
+        state[5] = 2 if 27 in hand else 1
+
+        #kriz kral
+        state[6] = 0 if self.search_discard(discard, 38) else 1
+        state[6] = 2 if 38 in hand else 1
+
+        #kriz dama
+        state[7] = 0 if self.search_discard(discard, 37) else 1
+        state[7] = 2 if 37 in hand else 1
+
+        #mega tarok
+        state[8] = self.search_mega_taroka(discard, hand)
+
+        #pagat
+        state[9] = 0 if self.search_discard(discard, 40) else 1
+        state[9] = 2 if 40 in hand else 1
+
+        #player2 brez tarokov
+        state[10] = 1 if self.skrt_igrane_karte(player2, 61, discard) else 0
+
+        #player3 brez tarokov
+        state[11] = 1 if self.skrt_igrane_karte(player3, 61, discard) else 0
+
+
+        if self.eval_stack(stack) == 1:
+            state[12] = 0
+        elif self.eval_stack(stack) <= 3:
+            state[12] = 1
+        else:
+            state[12] = 2
+
+        return tuple(state)
+
     def choose_card_play(self, stack, legal_moves, action):
         #     0           1               2              3
         #["spustis", "poberes min", "poberes mid", "poberes max"]

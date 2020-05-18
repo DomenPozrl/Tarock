@@ -73,3 +73,69 @@
 #igras tarok
 
 #tukej bojo pac neka polja, k bojo nan sepravi, ne mors igrt platlca ce ga nimas
+
+
+
+
+#okej dejmo mal razmislt o novem state representation
+#IDEJA B
+#mel bi neki na foro da za vsako karto/ sklop kart pove 0 -> ni v igri, 1 -> imam jz, 2 -> je v igri in nimam jz
+#herc kralj                                             3
+#herc dama												3
+#####herc pob/kaval											3
+#kara kralj 											3
+#kara dama												3
+###kara pob/kaval											3
+#pik kralj                                              3
+#pik dama												3
+###pik pob/kaval											3
+#kriz kralj                                             3
+#kriz dama                                              3
+###kriz pob/kaval	                                        3
+#####škis                                                   3
+#####mond                                                   3
+#megaTaroka 											6
+#pegat                                                  3
+######player2 skrt herca										2
+#########player2 skrt kare  									2
+#######player2 skrt pika										2
+######player2 skrt kriza										2
+#player2 brez tarokov									2
+#######player3 skrt herca										2				
+######player3 skrt kare 										2
+######player3 skrt pika 										2
+#########player3 skrt kriza 									2
+#player3 brez tarokov 									2
+#vrednost stack											3
+
+#to je prevec moznih kombinacij
+#kaj lahko režemo?
+#prva stvar k lahko režemo recimo je skrt kire barve zato ker naceloma nosimo te informacije ze gor
+#vrednost stack more nujno ostat, nic se ne povemo o tem
+#tudi kdo je brez tarokov more ostat
+#lahko za zacetek damo stran se pob/kaval
+#škis pa mond lahko zdruzimo ker itak interakcija med njima je minimalna drugace sta pa absolutno velika
+#sepravi namesto da mamo skis 3 in mond 3 mamo megaTaroka 6: 0 -> oba stran, 1 -> en je se v igri, 3 -> noben ni vec, 4 -> jz mam enga, 5 -> jz mam dva
+#to je 6 moznih stanja ampak 6 < 3*3 kar pomen da prsparamo
+#prsparamo zato, ker nam je vseen a mamo monda al skisa 
+
+#okej torej ce damo stran se pob/kaval za vsako barvo pridemo na 3¹⁰ * 2 * 2 * 6 moznih stanj kar je 1417176. To je doable okej, mejmo zdej to, #razmislmo se kaksn action bi igral. Idealno bi blo, da mas se igras kralja, igras
+
+ #recimo namesto herc kralj, das herc dama/kralj 0 -> dame ni, 1 -> damo mi, 2 -> dami oni, 3 -> kralja ni, 4 -> kralja mi, 5 -> kralja oni, 6-> obeh ni, 7 -> kralja mi damo oni, 8 -> damo mi kralja oni, 9 -> oba mi ne, to ni kul to je isti k
+
+ #dejmo najprej probat IDEJO B
+ #ampak potem IDEJA C bi lahko blo tud da namesto za vsako karto poves za barvo kok tock je se gor
+ #sepravi max -> 5 + 4 + 3 + 2
+ #moznosti {5, 6, 7, 8, 9, 10, 11, 12, 14} to je 9 moznosti za 1 barvo
+ #sam to je isto kot 3*3 moznosti za eno barvo sam da opisemo za vseh 5 vrednostnih kart
+ #ampak zdej je pa problem k ne opisemo kire mamo v roki
+ #okej bomo pol to, osredotocmo se na idejo b
+
+
+ #kir action bi mel
+ #tukej i guess bi lahko imel zelo podobno sam da pac zdej ni take krize glede velikosti
+ #okej, kaj ce sam damo 52 akcij za vsako stanje, sepravi kirokol karto igrat sam da ko zbiramo potezo smo previdni, da zberemo glede na legal moves?
+ #pomoje bi slo
+ #dejmo probat pa da vidmo ce se kej nauci
+ #komot odigramo tud milko igr
+ 
